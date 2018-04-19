@@ -27,7 +27,7 @@ public class MainActivityTest extends InstrumentationTestCase{
 
     @Test
     public void testAsyntask() throws Exception{
-        final MainActivity.EndpointsAsyncTask jokeTask= new MainActivity.EndpointsAsyncTask(null);
+        final MainActivity.EndpointsAsyncTask jokeTask= new MainActivity.EndpointsAsyncTask(null, null);
         final String[] result = new String[1];
         final CountDownLatch signal = new CountDownLatch(1);
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {

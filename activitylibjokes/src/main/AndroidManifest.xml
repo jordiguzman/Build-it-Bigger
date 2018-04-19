@@ -4,7 +4,7 @@
 
     <application>
         <activity android:name=".ActivityJoke"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+           android:parentActivityName=".ActivityJoke"/>
     </application>
 
 </manifest>

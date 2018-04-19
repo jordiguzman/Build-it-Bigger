@@ -1,6 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -16,16 +16,25 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import appkite.jordiguzman.com.activitylibjokes.ActivityJoke;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        setTitle(getResources().getString(R.string.label));
     }
 
 
@@ -51,20 +60,32 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void tellJoke(View view) {
-       new EndpointsAsyncTask(this).execute();
+    public void tellJokeFromMain(View view) {
+       new EndpointsAsyncTask(this, progressBar).execute();
     }
 
     public static class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
-        @SuppressLint("StaticFieldLeak")
-        private Context mContext;
 
 
-        EndpointsAsyncTask(Context context){
-            this.mContext = context;
+
+        private final AtomicReference<Context> mContext = new AtomicReference<>();
+
+        private final AtomicReference<ProgressBar> progressBar = new AtomicReference<>();
+
+
+
+        EndpointsAsyncTask(Context context, ProgressBar progressBar){
+            this.mContext.set(context);
+            this.progressBar.set(progressBar);
+
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.get().setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected String doInBackground(Void... params) {
@@ -78,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }).build();
             try {
-                return myApi.joke().execute().getData();
+                return myApi.tellJokes().execute().getData();
             }catch (IOException e){
                 return e.getMessage();
             }
@@ -86,7 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            ActivityJoke.tellJokes(mContext, s);
+            progressBar.get().setVisibility(View.INVISIBLE);
+            ActivityJoke.tellJokes(mContext.get(), s);
         }
 
     }

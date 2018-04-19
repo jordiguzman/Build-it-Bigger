@@ -4,7 +4,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 
-import appkite.jordiguzman.com.libjokes.Joke;
+import appkite.jordiguzman.com.libjokes.Jokes;
 
 /** An endpoint class we are exposing */
 @Api(
@@ -19,10 +19,10 @@ import appkite.jordiguzman.com.libjokes.Joke;
 public class MyEndpoint {
 
     /** A simple endpoint method that takes a name and says Hi back */
-    @ApiMethod(name = "joke")
+    @ApiMethod(name = "tellJokes")
     public MyBean sayHi() {
         MyBean response = new MyBean();
-        response.setData(new Joke().joke());
+        response.setData(new Jokes().getRandomJoke());
 
         return response;
     }

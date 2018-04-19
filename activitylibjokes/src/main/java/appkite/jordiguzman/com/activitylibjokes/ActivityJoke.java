@@ -13,6 +13,7 @@ public class ActivityJoke extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joke);
+        setTitle("");
 
         TextView tv_joke = findViewById(R.id.tv_joke);
         String joke = getIntent().getStringExtra("joke");
