@@ -18,9 +18,9 @@ import appkite.jordiguzman.com.libjokes.Jokes;
 )
 public class MyEndpoint {
 
-    /** A simple endpoint method that takes a name and says Hi back */
+    /** A simple endpoint method that takes a joke and show */
     @ApiMethod(name = "tellJokes")
-    public MyBean sayHi() {
+    public MyBean sayJoke() {
         MyBean response = new MyBean();
         response.setData(new Jokes().getRandomJoke());
 

@@ -23,7 +23,7 @@
   "tellJokes": {
    "httpMethod": "POST",
    "id": "myApi.tellJokes",
-   "path": "sayHi",
+   "path": "sayJoke",
    "response": {
     "$ref": "MyBean"
    },
